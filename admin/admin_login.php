@@ -1,5 +1,6 @@
 <?php
 session_start();
+include '../db.php';
 
 $error = "";
 
@@ -8,20 +9,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Fixed Admin Credentials
-    $admin_email = "admin@healthconnect.com";
-    $admin_password = "admin123";
+    $sql = "SELECT * FROM users
+            WHERE email='$email'
+            AND role='admin'";
 
-    if ($email == $admin_email && $password == $admin_password) {
+    $result = mysqli_query($conn, $sql);
 
-        $_SESSION['admin'] = $email;
+    if (mysqli_num_rows($result) > 0) {
 
-        header("Location: admin_dashboard.php");
-        exit();
+        $user = mysqli_fetch_assoc($result);
 
-    } else {
-        $error = "Invalid Email or Password";
+        if (password_verify($password, $user['password'])) {
+
+            $_SESSION['admin_id'] = $user['id'];
+            $_SESSION['admin_name'] = $user['name'];
+            $_SESSION['admin_email'] = $user['email'];
+
+            header("Location: admin_dashboard.php");
+            exit();
+        }
     }
+
+    $error = "Invalid Email or Password";
 }
 ?>
 
