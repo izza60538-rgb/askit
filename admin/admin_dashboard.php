@@ -23,124 +23,13 @@ if (!$result) {
 <head>
     <title>Admin Dashboard</title>
 
-    <style>
-
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:Arial, sans-serif;
-        }
-
-        body{
-            background:#f4f6f9;
-        }
-
-        .sidebar{
-            width:250px;
-            height:100vh;
-            background:#007bff;
-            position:fixed;
-            left:0;
-            top:0;
-            color:white;
-        }
-
-        .sidebar h2{
-            text-align:center;
-            padding:25px 0;
-            border-bottom:1px solid rgba(255,255,255,0.2);
-        }
-
-        .sidebar ul{
-            list-style:none;
-        }
-
-        .sidebar ul li a{
-            display:block;
-            padding:15px 20px;
-            color:white;
-            text-decoration:none;
-        }
-
-        .sidebar ul li a:hover{
-            background:#0056b3;
-        }
-
-        .content{
-            margin-left:250px;
-            padding:30px;
-        }
-
-        .admin-info{
-            background:white;
-            padding:20px;
-            border-radius:10px;
-            margin-bottom:20px;
-            box-shadow:0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .card{
-            background:white;
-            padding:20px;
-            border-radius:10px;
-            margin-bottom:20px;
-            box-shadow:0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        table{
-            width:100%;
-            border-collapse:collapse;
-            background:white;
-        }
-
-        table th{
-            background:#007bff;
-            color:white;
-            padding:12px;
-        }
-
-        table td{
-            padding:12px;
-            border:1px solid #ddd;
-        }
-
-        .delete-btn{
-            background:red;
-            color:white;
-            padding:8px 12px;
-            text-decoration:none;
-            border-radius:5px;
-        }
-
-        .delete-btn:hover{
-            background:darkred;
-        }
-
-    </style>
+    <link rel="stylesheet" href="admin_style.css">
+    
 </head>
 
 <body>
 
-<div class="sidebar">
-
-    <h2>HealthConnect</h2>
-
-    <ul>
-        <li>
-            <a href="admin_dashboard.php">
-                Enquiries
-            </a>
-        </li>
-
-        <li>
-            <a href="logout.php">
-                Logout
-            </a>
-        </li>
-    </ul>
-
-</div>
+    <?php include 'sidebar.php'; ?>
 
 <div class="content">
 
@@ -165,6 +54,7 @@ if (!$result) {
             <th>Phone</th>
             <th>Message</th>
             <th>Date</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
 
@@ -180,13 +70,33 @@ if (!$result) {
             <td><?php echo $row['created_at']; ?></td>
 
             <td>
-                <a
-                class="delete-btn"
-                href="delete_enquiry.php?id=<?php echo $row['id']; ?>"
-                onclick="return confirm('Delete this enquiry?')">
-                    Delete
-                </a>
+
+                <?php
+                if($row['read_status'] == 'Read'){
+                    echo "<span style='color:green;font-weight:bold;'>Read</span>";
+                } else {
+                    echo "<span style='color:red;font-weight:bold;'>Unread</span>";
+                }
+                ?>
+
             </td>
+
+<td>
+
+    <a
+    href="view_enquiry.php?id=<?php echo $row['id']; ?>"
+    style="background:green;color:white;padding:8px 12px;text-decoration:none;border-radius:5px;">
+        View
+    </a>
+
+    <a
+    class="delete-btn"
+    href="delete_enquiry.php?id=<?php echo $row['id']; ?>"
+    onclick="return confirm('Delete this enquiry?')">
+        Delete
+    </a>
+
+</td>
 
         </tr>
 

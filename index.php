@@ -41,8 +41,17 @@
         </ul>
 
         <div class="buttons">
-            <button class="login-btn">Login</button>
-            <button class="patient-btn">Patient Login</button>
+
+            <a href="admin/admin_login.php">
+                <button class="login-btn">
+                    Login
+                </button>
+            </a>
+
+            <button class="patient-btn">
+                Patient Login
+            </button>
+
         </div>
 
     </nav>
@@ -94,6 +103,11 @@
 </section>
 
 <!-- SERVICES -->
+<?php
+include 'db.php';
+
+$result = mysqli_query($conn, "SELECT * FROM features");
+?>
 
 <section class="services">
 
@@ -101,34 +115,22 @@
 
     <div class="service-grid">
 
-        <div class="card">
-            <i class="fa-solid fa-bolt"></i>
-            <h3>Consult Instantly</h3>
-            <p>Connect with doctors now.</p>
-        </div>
+        <?php while($row = mysqli_fetch_assoc($result)) { ?>
 
-        <div class="card">
-            <i class="fa-solid fa-calendar"></i>
-            <h3>Appointments</h3>
-            <p>Schedule specialist visits.</p>
-        </div>
+            <div class="card">
+               <img
+               src="uploads/<?php echo $row['image']; ?>"
+               width="70"
+               height="70">
+               <h3><?php echo $row['title']; ?></h3>
+               <p><?php echo $row['description']; ?></p>
+           </div>
 
-        <div class="card">
-            <i class="fa-solid fa-hospital"></i>
-            <h3>Hospitals</h3>
-            <p>Search nearby hospitals.</p>
-        </div>
+       <?php } ?>
 
-        <div class="card">
-            <i class="fa-solid fa-clinic-medical"></i>
-            <h3>Clinics</h3>
-            <p>Locate trusted clinics.</p>
-        </div>
-
-    </div>
+   </div>
 
 </section>
-
 <!-- HOW IT WORKS -->
 
 <section class="how-it-works">
